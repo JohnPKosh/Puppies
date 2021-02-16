@@ -44,14 +44,41 @@ cd %GIT%\Puppies\src\
 mkdir MvcPuppies
 ```
 
-**Step 3.** - Create the Solution
+**Step 3.** - Create the solution
 
 ```shell
 dotnet new sln -o .\MvcPuppies -n MvcPuppies
 ```
 
-or
+-- or --
 
 ```shell
 dotnet new sln -o %GIT%\Puppies\src\MvcPuppies -n MvcPuppies
 ```
+
+**Step 4.** - Create the MVC ASP.Net App
+
+```shell
+dotnet new mvc -o %GIT%\Puppies\src\MvcPuppies\Puppies.Web -n Puppies.Web
+```
+
+**Step 5.** - Add the MVC ASP.Net App to the solution
+
+```shell
+dotnet sln %GIT%\Puppies\src\MvcPuppies\MvcPuppies.sln add  %GIT%\Puppies\src\MvcPuppies\Puppies.Web\Puppies.Web.csproj
+```
+
+**Step 6.** - Verify project exists in the solution
+
+```shell
+dotnet sln %GIT%\Puppies\src\MvcPuppies\MvcPuppies.sln list
+```
+
+
+**Step 7.** - Build the .sln
+
+```shell
+dotnet build %GIT%\Puppies\src\MvcPuppies\MvcPuppies.sln
+```
+
+> Proceed to commit and Launch Solution in VS Code or Visual Studio
