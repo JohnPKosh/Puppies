@@ -1,26 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Puppies.Web
 {
-    public class Program
+  /// <summary>
+  /// Program class of the application that creates Host Builder and executes Startup
+  /// </summary>
+  public class Program
+  {
+    /// <summary>
+    /// Main entry point method of the application
+    /// </summary>
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+      CreateWebHostBuilder(args).Build().Run();
     }
+
+    /// <summary>
+    /// Method to build the hosting model and launch Startup.cs
+    /// </summary>
+    public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+    WebHost.CreateDefaultBuilder(args)
+        .UseStartup<Startup>();
+  }
 }
