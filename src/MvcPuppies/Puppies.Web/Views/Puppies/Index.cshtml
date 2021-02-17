@@ -14,10 +14,10 @@
     </tr>
     @foreach (var p in Model)
     {
-        var _trained = p.PaperTrained ? "Of Course" : "No, my house is a mess!";
+        var _trained = p.PaperTrained ? "Yes" : "No";
         <tr>
             <td>
-                @p.Name
+                <a asp-controller="Puppies" asp-action="Detail" asp-route-id="@p.Id">@p.Name</a>
             </td>
             <td>
                 @p.Weight lbs
@@ -26,7 +26,7 @@
                 @p.Gender
             </td>
             <td>
-                @p.PaperTrained - @{/* TODO: extend logic to "Yes"/"No" or other clever conditional logic */ } <strong><i>@_trained</i></strong>
+                <strong><i>@_trained</i></strong>
             </td>
         </tr>
     }

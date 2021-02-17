@@ -10,10 +10,7 @@ namespace Puppies.Web.DAL
   public class PuppyDaoList : IPuppyDao
   {
 
-    public PuppyDaoList()
-    {
-      
-    }
+    public PuppyDaoList() { }
 
 
     /// <summary>
@@ -28,10 +25,7 @@ namespace Puppies.Web.DAL
     /// Returns a specific puppy
     /// </summary>
     /// <returns></returns>
-    public Puppy GetPuppy(int id)
-    {
-      throw new NotImplementedException();
-    }
+    public Puppy GetPuppy(int id) => new Puppy() { Id = 1, Name = "Garcon", Weight = 8, Gender = "Female", PaperTrained = false };
 
     /// <summary>
     /// Saves a new puppy to the system.
