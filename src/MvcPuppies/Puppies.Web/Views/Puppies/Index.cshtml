@@ -14,6 +14,7 @@
     </tr>
     @foreach (var p in Model)
     {
+        var _trained = p.PaperTrained ? "Of Course" : "No, my house is a mess!";
         <tr>
             <td>
                 @p.Name
@@ -25,7 +26,7 @@
                 @p.Gender
             </td>
             <td>
-                @p.PaperTrained @{/* TODO: extend logic to "Yes"/"No" or other clever conditional logic */ }
+                @p.PaperTrained - @{/* TODO: extend logic to "Yes"/"No" or other clever conditional logic */ } <strong><i>@_trained</i></strong>
             </td>
         </tr>
     }
