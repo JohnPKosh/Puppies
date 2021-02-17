@@ -20,6 +20,9 @@ namespace Puppies.Web.DAL
     }
 
     ///<inheritdoc cref="IPuppyDao.GetPuppies"/>
+    /// <remarks>
+    /// For simplicty sake ADO.net is used here. Alternate implementations could use EF, Dapper, or other micro-orms
+    /// </remarks>
     public IList<Puppy> GetPuppies()
     {
       var rv = new List<Puppy>();
@@ -36,14 +39,14 @@ namespace Puppies.Web.DAL
           if (reader.HasRows)
           {
             while (reader.Read())
-            {
-              var _pup = new Puppy()
+            {             
+              var _pup = new Puppy  // TODO: consider using the other Puppy constructor if you prefer.
               {
-                Id = reader.GetInt32(0),
+                Id = reader.GetInt32(0),   // Referencing by position done for simplicity here.
                 Name = reader.GetString(1),
-                Weight = reader.GetInt32(2),
-                Gender = reader.GetString(3),
-                PaperTrained = reader.GetBoolean(4)
+                Weight = reader.IsDBNull(3) ? 0 : reader.GetInt32(2),   // perhaps we don't know how much?
+                Gender = reader.IsDBNull(3) ? null : reader.GetString(3), // perhaps we are not sure?
+                PaperTrained = reader.IsDBNull(3) ? false : reader.GetBoolean(4)
               };
               rv.Add(_pup);
             }
@@ -68,6 +71,9 @@ namespace Puppies.Web.DAL
     }
 
     ///<inheritdoc cref="IPuppyDao.GetPuppy(int)"/>
+    /// <remarks>
+    /// For simplicty sake ADO.net is used here. Alternate implementations could use EF, Dapper, or other micro-orms
+    /// </remarks>
     public Puppy GetPuppy(int id)
     {
       try
@@ -86,13 +92,13 @@ namespace Puppies.Web.DAL
           {
             while (reader.Read())
             {
-              var _pup = new Puppy()
+              var _pup = new Puppy // TODO: consider using the other Puppy constructor if you prefer.
               {
-                Id = reader.GetInt32(0),
+                Id = reader.GetInt32(0),    // Referencing by position done for simplicity here.
                 Name = reader.GetString(1),
-                Weight = reader.GetInt32(2),
-                Gender = reader.GetString(3),
-                PaperTrained = reader.GetBoolean(4)
+                Weight = reader.IsDBNull(3) ? 0 : reader.GetInt32(2),   // perhaps we don't know how much?
+                Gender = reader.IsDBNull(3) ? null : reader.GetString(3), // perhaps we are not sure?
+                PaperTrained = reader.IsDBNull(3) ? false : reader.GetBoolean(4)
               };
               rv = _pup;
             }
@@ -117,6 +123,9 @@ namespace Puppies.Web.DAL
     }
 
     ///<inheritdoc cref="IPuppyDao.SavePuppy(Puppy)"/>
+    /// <remarks>
+    /// For simplicty sake ADO.net is used here. Alternate implementations could use EF, Dapper, or other micro-orms
+    /// </remarks>
     public void SavePuppy(Puppy newPuppy)
     {
       try
@@ -128,7 +137,14 @@ namespace Puppies.Web.DAL
           var command = new SqlCommand(SqlScriptConstants.SAVE_PUPPY_SQL, connection);
           command.Parameters.Add(new SqlParameter("name", newPuppy.Name));
           command.Parameters.Add(new SqlParameter("weight", newPuppy.Weight));
-          command.Parameters.Add(new SqlParameter("gender", newPuppy.Gender));
+          if (newPuppy.Gender == null)
+          {
+            command.Parameters.Add(new SqlParameter("gender", DBNull.Value));
+          }
+          else
+          {
+            command.Parameters.Add(new SqlParameter("gender", newPuppy.Gender));
+          }
           command.Parameters.Add(new SqlParameter("paper_trained", newPuppy.PaperTrained));
 
           _ = command.ExecuteNonQuery();

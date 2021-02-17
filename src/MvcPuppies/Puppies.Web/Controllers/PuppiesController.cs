@@ -57,7 +57,7 @@ namespace Puppies.Web.Controllers
     }
 
     // POST: Puppies/Save
-    [HttpPost]
+    [HttpPost("Index")]
     [ValidateAntiForgeryToken]
     public ActionResult Save([Bind("Name,Weight,Gender,PaperTrained")] Puppy pup)
     {
@@ -66,9 +66,13 @@ namespace Puppies.Web.Controllers
 #if DEBUG
         _logger.LogInformation("POST: Puppies Save called for {0}", pup.Name);  // TODO: Implement full logging solution when building production app
 #endif
-
+        if (!ModelState.IsValid)
+        {
+          ViewData.Add("NoName", 1);
+          return View("Index", _puppyDao.GetPuppies());
+        }
         _puppyDao.SavePuppy(pup);
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction("Index");
       }
       catch(Exception ex)
       {
