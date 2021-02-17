@@ -37,7 +37,7 @@ namespace Puppies.Web.Controllers
       return View(_puppyDao.GetPuppy(id));
     }
 
-    // POST: Puppies/Create
+    // POST: Puppies/Save
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Save([Bind("Name,Weight,Gender,PaperTrained")] Puppy pup)
