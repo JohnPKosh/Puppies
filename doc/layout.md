@@ -114,5 +114,5 @@ dotnet new mvc -o %GIT%\Puppies\src\MvcPuppies\Puppies.Web -n Puppies.Web -f net
 ```
 
 ```shell
-dotnet new mvc -o %GIT%\Puppies\src\MvcPuppies\Puppies.Web -n Puppies.Web -f netcoreapp3.1
+dotnet new mvc -o %GIT%\Puppies\src\MvcPuppies\Puppies.Web -n Puppies.Web -f netcoreapp2.1
 ```
