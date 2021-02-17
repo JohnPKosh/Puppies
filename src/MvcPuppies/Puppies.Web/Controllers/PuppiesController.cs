@@ -72,7 +72,8 @@ namespace Puppies.Web.Controllers
           return View("Index", _puppyDao.GetPuppies());
         }
         _puppyDao.SavePuppy(pup);
-        return RedirectToAction("Index");
+        ViewData.Add("NoName", 0);
+        return View("Index", _puppyDao.GetPuppies());
       }
       catch(Exception ex)
       {
