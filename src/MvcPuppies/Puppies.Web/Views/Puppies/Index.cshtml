@@ -1,0 +1,59 @@
+﻿@model IList<Puppy>
+@{
+    ViewData["Title"] = "Puppies!!!";
+}
+
+<h1>Puppies!!!</h1>
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Weight</th>
+        <th>Gender</th>
+        <th>Paper Trained?</th>
+    </tr>
+    @foreach (var p in Model)
+    {
+        <tr>
+            <td>
+                @p.Name
+            </td>
+            <td>
+                @p.Weight lbs
+            </td>
+            <td>
+                @p.Gender
+            </td>
+            <td>
+                @p.PaperTrained @{/* TODO: extend logic to "Yes"/"No" or other clever conditional logic */ }
+            </td>
+        </tr>
+    }
+
+
+</table>
+<fieldset>
+<legend>Add a new puppy</legend>
+
+<form class="form" asp-area="" asp-controller="Puppies" asp-action="Save" method="POST">
+    <div class="form-group">
+        <input type="text" class="form-control" name="Name" placeholder="Name">
+    </div>
+    <div class="form-group">
+        <input type="number" class="form-control" name="Weight" placeholder="Weight">
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="radio" name="Gender" value="Male"> Male
+        </label>
+        <label>
+            <input type="radio" name="Gender" value="Female"> Female
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" name="PaperTrained" value="true"> Paper Trained</label>
+    </div>
+    <input class="btn btn-default" name="submit" value="Save Puppy!" type="submit" />
+</form>
+</fieldset>
