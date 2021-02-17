@@ -1,5 +1,8 @@
 ﻿namespace Puppies.Web.DAL
 {
+  /// <summary>
+  /// Constants static class for inlined SQL command test strings. HACK: Should not be done in real life
+  /// </summary>
   public static class SqlScriptConstants
   {
     /// <summary>SELECTs all rows from the puppies table ordered by Id Asc (for consistency sake only)</summary>

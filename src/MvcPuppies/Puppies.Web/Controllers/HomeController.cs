@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
 using Puppies.Web.Models;
 
 namespace Puppies.Web.Controllers
@@ -10,6 +12,7 @@ namespace Puppies.Web.Controllers
   {
     private readonly ILogger<HomeController> _logger;
 
+    /// <summary> The default constructor which accepts an ILogger through DI in Startup </summary>
     public HomeController(ILogger<HomeController> logger)
     {
       _logger = logger;

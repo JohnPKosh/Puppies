@@ -8,11 +8,15 @@ using Puppies.Web.Models;
 
 namespace Puppies.Web.DAL
 {
+  /// <summary>
+  /// Public concrete impementation of IPuppyDao to access Puppy data from a data store
+  /// </summary>
   public class PuppySqlDao : IPuppyDao
   {
     private readonly ILogger<PuppySqlDao> _logger;
     private readonly string _connectionString;
 
+    /// <summary> The default constructor which accepts an ILogger and connection strings through DI in Startup </summary>
     public PuppySqlDao(ILogger<PuppySqlDao> logger, string connectionString)
     {
       _logger = logger;
