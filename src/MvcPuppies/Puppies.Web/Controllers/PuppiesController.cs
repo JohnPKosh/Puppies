@@ -40,10 +40,11 @@ namespace Puppies.Web.Controllers
     // POST: Puppies/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(IFormCollection collection)
+    public ActionResult Save([Bind("Name,Weight,Gender,PaperTrained")] Puppy pup)
     {
       try
       {
+        _puppyDao.SavePuppy(pup);
         return RedirectToAction(nameof(Index));
       }
       catch

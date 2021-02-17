@@ -17,13 +17,14 @@
 
 
 @*
-    Added convenience method below just to improve the paragraph text to refer to "he" of "she".
+    HACK: Added convenience method below just to improve the paragraph text to refer to "he" of "she".
     This could be refactored away to a more usable location. For instance a read only lamda
     property could be created directly on the Puppy model.
 
     public string HeOrShe => 
         string.IsNullOrWhiteSpace(Gender) && Gender.Equals("female", StringComparison.InvariantCultureIgnoreCase)) ? "she":"he";
 *@
+
 @functions{
     public string GetHeOrShe(string gender)
     {

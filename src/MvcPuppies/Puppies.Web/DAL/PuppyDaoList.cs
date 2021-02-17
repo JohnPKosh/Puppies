@@ -34,7 +34,8 @@ namespace Puppies.Web.DAL
     /// <returns></returns>
     public void SavePuppy(Puppy newPuppy)
     {
-      throw new NotImplementedException();
+      // Do nothing for now
+      //throw new NotImplementedException();
     }
   }
 }
