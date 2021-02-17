@@ -29,6 +29,8 @@ README.md
 
 Source Directory "`%GIT%\Puppies\src\`" - The src directory will contain one subfolder for each "__*.sln__" file as well as sub directories for projects or nested sub directories for common related project groupings if applicable.
 
+---
+
 ## Solution Setup
 ---
 
@@ -96,6 +98,8 @@ _*Note - if chrome does not launch from command line above you will need to add 
 ---
 
 ## Additional Changes
+
+---
 
 The original solution projects above were created using dotnet 5 SDK default templates. All of the `dotnet new` scaffolded code was then back-ported to .NET core 2.1. In order to target a specific .Net version add the `-f | --framework <FRAMEWORK>` options above.
 
