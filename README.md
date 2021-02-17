@@ -8,7 +8,7 @@
 
 Throughout the project additional attention has been payed to apply appropriate commenting, minimal logging, basic error handling, TODOs and other general practices surrounding modern application development. The ASP.Net MVC project encapsulates the minimum viable product with a few callout comments meant for talking points and discussion. 
 
-The entire project was built by hand (initially using the `dotnet` command line tool) based on the bitbucket repository. Not all standard industy patterns and practices have been applied however there is a fair amount of quality code delivered in the project that could be beneficial as instructional material. All SCM local repository management was also conducted with the `git` command line tool.
+The entire project was built by hand (initially using the `dotnet` command line tool) based on the bitbucket repository. Not all standard industy patterns and practices have been applied however there is a fair amount of quality code delivered in the project that could be beneficial as instructional material. All SCM local repository management was also conducted with the **`git`** command line tool.
 
 ---
 
@@ -16,7 +16,7 @@ _Demonstration project requirements and direction were taken from the original [
 
 The repository structure has been modified to accomodate a more general larger project structure capable of working with multiple demonstration solutions as well as additional support materials.
 
-To understand the repository structure see the [layout documentation](doc\layout.md).
+To understand the repository structure or to learn how to build the project using **`dotnet new`** see the [layout documentation](doc/layout.md).
 
 ---
 
