@@ -1,12 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <!--<PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>-->
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <ServerGarbageCollection>true</ServerGarbageCollection> 
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <!-- 
+  Note - ServerGarbageCollection true above is only needed for production. 
+  However it is good practice to add it to avoid oversight later 
+  -->
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App">
@@ -14,6 +20,9 @@
       <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1.0" />
   </ItemGroup>
 
 </Project>

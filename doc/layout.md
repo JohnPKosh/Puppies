@@ -92,3 +92,23 @@ chrome.exe https://localhost:5001
 _*Note - if chrome does not launch from command line above you will need to add the chrome.exe directory to your PATH environment variables_
 
 > Proceed to commit and Launch Solution in VS Code or Visual Studio
+
+---
+
+## Additional Changes
+
+The original solution projects above were created using dotnet 5 SDK default templates. All of the `dotnet new` scaffolded code was then back-ported to .NET core 2.1. In order to target a specific .Net version add the `-f | --framework <FRAMEWORK>` options above.
+
+e.g.
+
+```shell
+dotnet new mvc -o %GIT%\Puppies\src\MvcPuppies\Puppies.Web -n Puppies.Web -f net5.0
+```
+
+```shell
+dotnet new mvc -o %GIT%\Puppies\src\MvcPuppies\Puppies.Web -n Puppies.Web -f netcoreapp3.1
+```
+
+```shell
+dotnet new mvc -o %GIT%\Puppies\src\MvcPuppies\Puppies.Web -n Puppies.Web -f netcoreapp3.1
+```

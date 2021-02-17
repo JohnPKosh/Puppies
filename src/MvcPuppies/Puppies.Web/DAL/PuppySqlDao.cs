@@ -1,33 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
+
+using Microsoft.Extensions.Logging;
 
 using Puppies.Web.Models;
 
 namespace Puppies.Web.DAL
 {
+  /// <summary>
+  /// Public concrete impementation of IPuppyDao to access Puppy data from a data store
+  /// </summary>
   public class PuppySqlDao : IPuppyDao
   {
-    private readonly string connectionString;
+    private readonly ILogger<PuppySqlDao> _logger;
+    private readonly string _connectionString;
 
-    public PuppySqlDao(string connectionString)
+    /// <summary> The default constructor which accepts an ILogger and connection strings through DI in Startup </summary>
+    public PuppySqlDao(ILogger<PuppySqlDao> logger, string connectionString)
     {
-      this.connectionString = connectionString;
+      _logger = logger;
+      _connectionString = connectionString;
     }
 
-    /// <summary>
-    /// Returns a list of all puppies
-    /// </summary>
-    /// <returns><![CDATA[IList<Puppy>]]></returns>
+    ///<inheritdoc cref="IPuppyDao.GetPuppies"/>
+    /// <remarks>
+    /// For simplicty sake ADO.net is used here. Alternate implementations could use EF, Dapper, or other micro-orms
+    /// </remarks>
     public IList<Puppy> GetPuppies()
     {
       var rv = new List<Puppy>();
       try
       {
-        var connection = new SqlConnection(connectionString);
+        var connection = new SqlConnection(_connectionString);
         using (connection)
         {
           connection.Open();
@@ -38,42 +43,47 @@ namespace Puppies.Web.DAL
           if (reader.HasRows)
           {
             while (reader.Read())
-            {
-              var _pup = new Puppy()
+            {             
+              var _pup = new Puppy  // TODO: consider using the other Puppy constructor if you prefer.
               {
-                Id = reader.GetInt32(0),
+                Id = reader.GetInt32(0),   // Referencing by position done for simplicity here.
                 Name = reader.GetString(1),
-                Weight = reader.GetInt32(2),
-                Gender = reader.GetString(3),
-                PaperTrained = reader.GetBoolean(4)
+                Weight = reader.IsDBNull(3) ? 0 : reader.GetInt32(2),   // perhaps we don't know how much?
+                Gender = reader.IsDBNull(3) ? null : reader.GetString(3), // perhaps we are not sure?
+                PaperTrained = reader.IsDBNull(3) ? false : reader.GetBoolean(4)
               };
               rv.Add(_pup);
             }
           }
           reader.Close();
         }
+#if DEBUG
+        _logger.LogInformation("GetPuppies ALL from SQL Server called");  // TODO: Implement full logging solution when building production app
+#endif
         return rv;
       }
       catch (SqlException ex)
       {
+        _logger.LogError(ex, "GetPuppies ALL SqlException - {1}",  ex.Message);
         throw;
       }
-      catch (Exception ex)
+      catch (Exception ex)  // TODO: Add basic catch-all library exception type instead of using System.Exception
       {
+        _logger.LogError(ex, "GetPuppies ALL Exception - {1}", ex.Message);
         throw;
       }
     }
 
-    /// <summary>
-    /// Returns a specific puppy
-    /// </summary>
-    /// <returns>Puppy</returns>
+    ///<inheritdoc cref="IPuppyDao.GetPuppy(int)"/>
+    /// <remarks>
+    /// For simplicty sake ADO.net is used here. Alternate implementations could use EF, Dapper, or other micro-orms
+    /// </remarks>
     public Puppy GetPuppy(int id)
     {
       try
       {
         Puppy rv = null;
-        var connection = new SqlConnection(connectionString);
+        var connection = new SqlConnection(_connectionString);
         using (connection)
         {
           connection.Open();
@@ -86,58 +96,75 @@ namespace Puppies.Web.DAL
           {
             while (reader.Read())
             {
-              var _pup = new Puppy()
+              var _pup = new Puppy // TODO: consider using the other Puppy constructor if you prefer.
               {
-                Id = reader.GetInt32(0),
+                Id = reader.GetInt32(0),    // Referencing by position done for simplicity here.
                 Name = reader.GetString(1),
-                Weight = reader.GetInt32(2),
-                Gender = reader.GetString(3),
-                PaperTrained = reader.GetBoolean(4)
+                Weight = reader.IsDBNull(3) ? 0 : reader.GetInt32(2),   // perhaps we don't know how much?
+                Gender = reader.IsDBNull(3) ? null : reader.GetString(3), // perhaps we are not sure?
+                PaperTrained = reader.IsDBNull(3) ? false : reader.GetBoolean(4)
               };
               rv = _pup;
             }
           }
           reader.Close();
         }
+#if DEBUG
+        _logger.LogInformation("GetPuppy({0}) from SQL Server called", id);  // TODO: Implement full logging solution when building production app
+#endif
         return rv;
       }
       catch (SqlException ex)
       {
+        _logger.LogError(ex, "GetPuppy SqlException ({0}) - {1}", id, ex.Message);
         throw;
       }
-      catch (Exception ex)
+      catch (Exception ex)  // TODO: Add basic catch-all library exception type instead of using System.Exception
       {
+        _logger.LogError(ex, "GetPuppy ({0}) - {1}", id, ex.Message);
         throw;
       }
     }
 
-    /// <summary>
-    /// Saves a new puppy to the system.
-    /// </summary>
-    /// <param name="newPuppy"></param>
+    ///<inheritdoc cref="IPuppyDao.SavePuppy(Puppy)"/>
+    /// <remarks>
+    /// For simplicty sake ADO.net is used here. Alternate implementations could use EF, Dapper, or other micro-orms
+    /// </remarks>
     public void SavePuppy(Puppy newPuppy)
     {
       try
       {
-        var connection = new SqlConnection(connectionString);
+        var connection = new SqlConnection(_connectionString);
         using (connection)
         {
           connection.Open();
           var command = new SqlCommand(SqlScriptConstants.SAVE_PUPPY_SQL, connection);
           command.Parameters.Add(new SqlParameter("name", newPuppy.Name));
           command.Parameters.Add(new SqlParameter("weight", newPuppy.Weight));
-          command.Parameters.Add(new SqlParameter("gender", newPuppy.Gender));
+          if (newPuppy.Gender == null)
+          {
+            command.Parameters.Add(new SqlParameter("gender", DBNull.Value));
+          }
+          else
+          {
+            command.Parameters.Add(new SqlParameter("gender", newPuppy.Gender));
+          }
           command.Parameters.Add(new SqlParameter("paper_trained", newPuppy.PaperTrained));
 
           _ = command.ExecuteNonQuery();
+#if DEBUG
+          _logger.LogInformation("SavePuppy {0} to SQL Server called", newPuppy.Name);  // TODO: Implement full logging solution when building production app
+#endif
         }
       }
       catch (SqlException ex)
       {
+        _logger.LogError(ex, "SavePuppy SqlException - {1}", ex.Message);
         throw;
       }
       catch (Exception ex)
       {
+        _logger.LogError(ex, "SavePuppy Exception - {1}", ex.Message);
         throw;
       }
     }
