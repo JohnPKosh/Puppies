@@ -14,7 +14,7 @@ namespace Puppies.Web
   /// <summary> The bootstrap hosting startup class </summary>
   public class Startup
   {
-    const string CONN_STR = "Data Source=DEVHOME\\DEV2019;Initial Catalog=module3assessment;Integrated Security=True;";
+    const string CONN_STR = "Data Source=.\\sqlexpress;Initial Catalog=module3assessment;Integrated Security=True;";
 
     /// <summary> The Startup class constructor called by Program.cs host builder method to inject service configuration </summary>
     public Startup(IConfiguration configuration)
