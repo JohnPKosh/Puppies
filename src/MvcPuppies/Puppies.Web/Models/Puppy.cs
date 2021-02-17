@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Puppies.Web.Models
+﻿namespace Puppies.Web.Models
 {
-    public class Puppy
+  public class Puppy
     {
         public Puppy() {}
 

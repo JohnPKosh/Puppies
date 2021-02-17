@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Puppies.Web.DAL
+﻿namespace Puppies.Web.DAL
 {
   public static class SqlScriptConstants
   {

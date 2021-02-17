@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
+
+using Microsoft.Extensions.Logging;
 
 using Puppies.Web.Models;
 
@@ -11,23 +10,22 @@ namespace Puppies.Web.DAL
 {
   public class PuppySqlDao : IPuppyDao
   {
-    private readonly string connectionString;
+    private readonly ILogger<PuppySqlDao> _logger;
+    private readonly string _connectionString;
 
-    public PuppySqlDao(string connectionString)
+    public PuppySqlDao(ILogger<PuppySqlDao> logger, string connectionString)
     {
-      this.connectionString = connectionString;
+      _logger = logger;
+      _connectionString = connectionString;
     }
 
-    /// <summary>
-    /// Returns a list of all puppies
-    /// </summary>
-    /// <returns><![CDATA[IList<Puppy>]]></returns>
+    ///<inheritdoc cref="IPuppyDao.GetPuppies"/>
     public IList<Puppy> GetPuppies()
     {
       var rv = new List<Puppy>();
       try
       {
-        var connection = new SqlConnection(connectionString);
+        var connection = new SqlConnection(_connectionString);
         using (connection)
         {
           connection.Open();
@@ -52,28 +50,30 @@ namespace Puppies.Web.DAL
           }
           reader.Close();
         }
+#if DEBUG
+        _logger.LogInformation("GetPuppies ALL from SQL Server called");  // TODO: Implement full logging solution when building production app
+#endif
         return rv;
       }
       catch (SqlException ex)
       {
+        _logger.LogError(ex, "GetPuppies ALL SqlException - {1}",  ex.Message);
         throw;
       }
-      catch (Exception ex)
+      catch (Exception ex)  // TODO: Add basic catch-all library exception type instead of using System.Exception
       {
+        _logger.LogError(ex, "GetPuppies ALL Exception - {1}", ex.Message);
         throw;
       }
     }
 
-    /// <summary>
-    /// Returns a specific puppy
-    /// </summary>
-    /// <returns>Puppy</returns>
+    ///<inheritdoc cref="IPuppyDao.GetPuppy(int)"/>
     public Puppy GetPuppy(int id)
     {
       try
       {
         Puppy rv = null;
-        var connection = new SqlConnection(connectionString);
+        var connection = new SqlConnection(_connectionString);
         using (connection)
         {
           connection.Open();
@@ -99,27 +99,29 @@ namespace Puppies.Web.DAL
           }
           reader.Close();
         }
+#if DEBUG
+        _logger.LogInformation("GetPuppy({0}) from SQL Server called", id);  // TODO: Implement full logging solution when building production app
+#endif
         return rv;
       }
       catch (SqlException ex)
       {
+        _logger.LogError(ex, "GetPuppy SqlException ({0}) - {1}", id, ex.Message);
         throw;
       }
-      catch (Exception ex)
+      catch (Exception ex)  // TODO: Add basic catch-all library exception type instead of using System.Exception
       {
+        _logger.LogError(ex, "GetPuppy ({0}) - {1}", id, ex.Message);
         throw;
       }
     }
 
-    /// <summary>
-    /// Saves a new puppy to the system.
-    /// </summary>
-    /// <param name="newPuppy"></param>
+    ///<inheritdoc cref="IPuppyDao.SavePuppy(Puppy)"/>
     public void SavePuppy(Puppy newPuppy)
     {
       try
       {
-        var connection = new SqlConnection(connectionString);
+        var connection = new SqlConnection(_connectionString);
         using (connection)
         {
           connection.Open();
@@ -130,14 +132,19 @@ namespace Puppies.Web.DAL
           command.Parameters.Add(new SqlParameter("paper_trained", newPuppy.PaperTrained));
 
           _ = command.ExecuteNonQuery();
+#if DEBUG
+          _logger.LogInformation("SavePuppy {0} to SQL Server called", newPuppy.Name);  // TODO: Implement full logging solution when building production app
+#endif
         }
       }
       catch (SqlException ex)
       {
+        _logger.LogError(ex, "SavePuppy SqlException - {1}", ex.Message);
         throw;
       }
       catch (Exception ex)
       {
+        _logger.LogError(ex, "SavePuppy Exception - {1}", ex.Message);
         throw;
       }
     }
