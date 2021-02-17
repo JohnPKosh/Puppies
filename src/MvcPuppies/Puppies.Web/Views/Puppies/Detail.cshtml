@@ -1,0 +1,13 @@
+@model Puppy
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<h1>@Model.Name <small>@Model.Gender</small></h1>
+
+<p>@Model.Name is a wonderful dog who weighs @Model.Weight lbs and is
+@if(!Model.PaperTrained)
+{
+    <text> NOT </text>
+}
+paper trained.</p>
