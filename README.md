@@ -20,6 +20,7 @@ This method gets a video by it's ID
 {% endswagger-description %}
 
 {% swagger-parameter in="path" required="true" type="Integer" %}
+ID of the video to retrieve
 
 {% endswagger-parameter %}
 
