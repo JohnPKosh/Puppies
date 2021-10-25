@@ -14,13 +14,19 @@ description: 'TODO: Put some clever text here'
 This game kicks butt!
 {% endembed %}
 
-{% swagger method="get" path="/www.solidrocketfuel/api/v1/video/{id}" baseUrl="https:/" summary="Gets a video by `id`" %}
+{% swagger method="get" path="/www.solidrocketfuel/api/v1/video/" baseUrl="https:/" summary="Gets a video by `id`" %}
 {% swagger-description %}
-
+This method gets a video by it's ID
 {% endswagger-description %}
 
-{% swagger-parameter in="path" required="true" %}
+{% swagger-parameter in="path" required="true" type="Integer" %}
 
+{% endswagger-parameter %}
+
+{% swagger-parameter in="query" name="active" type="Boolean" %}
+Filters for only active records if set to 
+
+**true**
 {% endswagger-parameter %}
 
 {% swagger-response status="200: OK" description="A video url" %}
