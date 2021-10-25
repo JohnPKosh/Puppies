@@ -19,7 +19,7 @@ This game kicks butt!
 This method gets a video by it's ID
 {% endswagger-description %}
 
-{% swagger-parameter in="path" required="true" type="Integer" %}
+{% swagger-parameter in="path" required="true" type="Integer" name="id" %}
 ID of the video to retrieve
 {% endswagger-parameter %}
 
